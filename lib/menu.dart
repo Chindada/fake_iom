@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fake_iom/api.dart';
+import 'package:fake_iom/schedule.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({this.loginData});
@@ -38,28 +39,49 @@ class _HomePageState extends State<HomePage> {
             for (var i = 0; i < snapshot.data.resource.length; i++) {
               var text = snapshot.data.resource[i].name;
               if (snapshot.data.resource[i].seq == 1) {
+                List<Shadow> sha = [];
+                sha.add(Shadow(color: Colors.white, offset: Offset(2, 2)));
                 cardList.add(
-                  Container(
+                  RaisedButton(
+                    // elevation: 3.3,
+                    // padding: EdgeInsets.all(40),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(50))),
                     color: Colors.teal,
-                    margin: EdgeInsets.all(40),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Center(
-                          child: Text(text),
+                    onPressed: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
+                        return SchedulePage();
+                      }));
+                    },
+                    child: Container(
+                      color: Colors.teal,
+                      margin: EdgeInsets.all(20),
+                      child: Center(
+                        child: Text(
+                          text,
+                          style: TextStyle(
+                            fontSize: 35,
+                            shadows: sha,
+                          ),
                         ),
-                      ],
+                      ),
                     ),
                   ),
                 );
               }
             }
-            return GridView(
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 4,
-                childAspectRatio: 1.2,
+            return Container(
+              margin: EdgeInsets.all(20),
+              child: GridView(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 3,
+                  childAspectRatio: 1.1,
+                  crossAxisSpacing: 20,
+                  mainAxisSpacing: 20,
+                ),
+                children: cardList,
               ),
-              children: cardList,
             );
           } else if (snapshot.hasError) {
             return Center(
